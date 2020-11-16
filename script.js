@@ -1,18 +1,17 @@
-let numbers = document.querySelectorAll('.number');
-let operations = document.querySelectorAll('.operator');
-let decimalBtn = document.getElementById('decimal');
-let clearBtns = document.querySelectorAll('.clear-btn');   
-let resultBtn = document.getElementById('result');
-let piBtn = document.getElementById('pi');
-let display =document.getElementById('display');
-let MemoryCurrentNumber = 0; // what number is currently entered on the scoreboard, by default 0
-let MemoryNewNumber = false; // have we introduced a new meaning?
-let MemoryPendingOperation= '';    // pending operation
-
+let numbers = document.querySelectorAll('.number'),
+    operations = document.querySelectorAll('.operator'),
+    decimalBtn = document.getElementById('decimal'),
+    clearBtns = document.querySelectorAll('.clear-btn'),    
+    resultBtn = document.getElementById('result'),
+    piBtn = document.getElementById('pi'),
+    display =document.getElementById('display'),
+    MemoryCurrentNumber = 0, // какой номер сейчас введен на табло, по умолчанию 0
+    MemoryNewNumber = false, // ввели мы новое значение?
+    MemoryPendingOperation= '';    // операция в ожидании
     
 for(let i=0; i<numbers.length; i++){
   let number = numbers[i];
-  number.addEventListener('click', function(e){ //event handler
+  number.addEventListener('click', function(e){ //обработчик событий
     numberPress(e.target.textContent)
   });
 };
@@ -48,51 +47,41 @@ function numberPress(number){
 };
 
 function operation(op){
-    let localOperationMemory = display.value;
+  let localOperationMemory = display.value; 
     if(MemoryNewNumber && MemoryPendingOperation !== "=") {
-        display.value = MemoryCurrentNumber;
+      display.value = MemoryCurrentNumber;      
     } else {
-        MemoryNewNumber = true;
-        switch (MemoryPendingOperation) {
-            case "+":
-                MemoryCurrentNumber = MemoryCurrentNumber + Number(localOperationMemory);
-                break;
-            case "-":
-                MemoryCurrentNumber = MemoryCurrentNumber -  Number(localOperationMemory);
-                break;
-            case "*":
-                MemoryCurrentNumber = MemoryCurrentNumber * Number(localOperationMemory);
-                break;
-            case "/":
-                MemoryCurrentNumber = MemoryCurrentNumber / Number(localOperationMemory);
-                break;
-            case "x²":
-                MemoryCurrentNumber = display.value;            
-                MemoryCurrentNumber = Number(MemoryCurrentNumber) * Number(MemoryCurrentNumber);                     
-                MemoryPendingOperation = op;
-                break;
-            case "x³":
-                MemoryCurrentNumber = display.value;            
-                MemoryCurrentNumber = Number(MemoryCurrentNumber) * Number(MemoryCurrentNumber)* Number(MemoryCurrentNumber);
-                MemoryPendingOperation = op;
-                break;
-            case "√":
-                MemoryCurrentNumber = display.value;              
-                MemoryCurrentNumber = Math.sqrt(localOperationMemory);
-                MemoryPendingOperation = op;
-                break;
-            case "1/x":
-                MemoryCurrentNumber = display.value;               
-                MemoryCurrentNumber = 1/localOperationMemory;
-                MemoryPendingOperation = op;
-                break;
-            default:
-                MemoryCurrentNumber = +localOperationMemory; 
-                break;
-          };
-    display.value = MemoryCurrentNumber;
-    MemoryPendingOperation = op;
-};
+      MemoryNewNumber = true;
+      if (MemoryPendingOperation === "+") {
+        MemoryCurrentNumber += +localOperationMemory;  
+      } else if (MemoryPendingOperation === "-") {
+        MemoryCurrentNumber -= +localOperationMemory;  
+      } else if (MemoryPendingOperation === "*") {
+        MemoryCurrentNumber *= +localOperationMemory;  
+      } else if (MemoryPendingOperation === "/") {
+        MemoryCurrentNumber /= +localOperationMemory;  
+      }else if (op === "x²") {        
+        MemoryCurrentNumber = display.value;            
+        MemoryCurrentNumber *= +MemoryCurrentNumber ;                     
+        MemoryPendingOperation = op;
+      }else if (op === "x³") {   
+        MemoryCurrentNumber = display.value;            
+        MemoryCurrentNumber *= +MemoryCurrentNumber * +MemoryCurrentNumber;
+        MemoryPendingOperation = op;      
+      }else if (op === "√") { 
+        MemoryCurrentNumber = display.value;              
+        MemoryCurrentNumber = Math.sqrt(localOperationMemory);
+        MemoryPendingOperation = op;                     
+      }else if (op === "1/x") {
+        MemoryCurrentNumber = display.value;               
+        MemoryCurrentNumber = 1/localOperationMemory;
+        MemoryPendingOperation = op; 
+      }else {
+        MemoryCurrentNumber = +localOperationMemory;  
+      }
+      display.value = MemoryCurrentNumber;
+      MemoryPendingOperation = op;
+    };
 };
 
 function decimal(){
@@ -111,12 +100,12 @@ if(MemoryNewNumber){
 function clear(id){
   if(id === 'ce'){
     display.value = '0';
-    MemoryNewNumber = true;
+    MemoryNewNumber = true
   }else if(id === 'c'){
     display.value = '0';
     MemoryNewNumber = true;
     MemoryCurrentNumber = 0;
     MemoryPendigOperation = '';    
-  }    
+  }  
+  console.log(MemoryNewNumber);
 };
- 
