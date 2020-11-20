@@ -89,25 +89,24 @@ function operation(op) {
 
 function decimal() {
   let localDecimalMemory = display.value;
-if (memoryNewNumber) {
-  localDecimalMemory = '0.';
-  memoryNewNumber= false;
-} else {
+  if (memoryNewNumber) {
+    localDecimalMemory = '0.';
+    memoryNewNumber= false;
+  } else {
     if (localDecimalMemory.indexOf('.') === -1) {
-      localDecimalMemory +='.'
-    }    
+      localDecimalMemory +='.';
+    }
   }
-  display.value = localDecimalMemory;  
+  display.value = localDecimalMemory;
 };
 
  function clear(id) {
   if (id === 'ce') {
-    display.value = '0';
-    memoryNewNumber = true;
+    display.value = '0';    
   } else if (id === 'c') {
-    display.value = '0';
-    memoryNewNumber = true;
+    display.value = '0';   
     memoryCurrentNumber = 0;
     memoryPendigOperation = '';    
-  }    
+  }
+  memoryNewNumber = true;    
 };
