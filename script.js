@@ -110,3 +110,4 @@ function decimal() {
   }
   memoryNewNumber = true;    
 };
+
