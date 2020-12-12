@@ -1,32 +1,31 @@
-let numbers = document.querySelectorAll('.number');
-let operations = document.querySelectorAll('.operator');
-let decimalBtn = document.getElementById('decimal');
-let clearBtns = document.querySelectorAll('.clear-btn');   
-let resultBtn = document.getElementById('result');
-let piBtn = document.getElementById('pi');
-let display =document.getElementById('display');
-let MemoryCurrentNumber = 0; // what number is currently entered on the scoreboard, by default 0
-let MemoryNewNumber = false; // have we introduced a new meaning?
-let MemoryPendingOperation= '';    // pending operation
-
+const numbers = document.querySelectorAll('.number');
+const operations = document.querySelectorAll('.operator');
+const decimalBtn = document.getElementById('decimal');
+const clearBtns = document.querySelectorAll('.clear-btn');   
+const resultBtn = document.getElementById('result');
+const piBtn = document.getElementById('pi');
+const display = document.getElementById('display');
+let memoryCurrentNumber = 0; // what number is currently entered on the scoreboard, by default 0
+let memoryNewNumber = false; // have we introduced a new meaning?
+let memoryPendingOperation = ''; // pending operation
     
-for(let i=0; i<numbers.length; i++){
+for (let i = 0; i < numbers.length; i++) {
   let number = numbers[i];
-  number.addEventListener('click', function(e){ //event handler
-    numberPress(e.target.textContent)
+  number.addEventListener('click', function(e) { //event handler
+    numberPress(e.target.textContent);
   });
 };
 
-for(let i=0; i<operations.length; i++){
+for (let i = 0; i < operations.length; i++) {
   let operationBtn = operations[i];
-  operationBtn.addEventListener('click', function(e){    
+  operationBtn.addEventListener('click', function(e) {    
     operation(e.target.textContent);    
   });
 };
 
-for(let i=0; i<clearBtns.length; i++){
+for (let i = 0; i < clearBtns.length; i++) {
   let clearBtn = clearBtns[i];
-  clearBtn.addEventListener('click', function(e){    
+  clearBtn.addEventListener('click', function(e) {    
     clear(e.target.id);   
   });
 }; 
@@ -34,89 +33,80 @@ for(let i=0; i<clearBtns.length; i++){
 decimalBtn.addEventListener('click', decimal);
 piBtn.addEventListener('click', pi);
 
-function numberPress(number){
-  if(MemoryNewNumber){
+
+function numberPress(number) {
+  if (memoryNewNumber) {
     display.value = number;
-    MemoryNewNumber = false;
-  }else{
-  if(display.value === '0'){
-    display.value = number;
-  }else{
-    display.value += number;
+    memoryNewNumber = false;
+  } else {
+    display.value = display.value === '0' ? number : display.value + number;
   };
 };  
-};
 
-function operation(op){
+function operation(op) {
     let localOperationMemory = display.value;
-    if(MemoryNewNumber && MemoryPendingOperation !== "=") {
-        display.value = MemoryCurrentNumber;
+    if (memoryNewNumber && memoryPendingOperation !== "=") {
+        display.value = memoryCurrentNumber;
     } else {
-        MemoryNewNumber = true;
-        switch (MemoryPendingOperation) {
+      memoryNewNumber = true;
+        switch (memoryPendingOperation) {
             case "+":
-                MemoryCurrentNumber = MemoryCurrentNumber + Number(localOperationMemory);
+                memoryCurrentNumber = memoryCurrentNumber + Number(localOperationMemory);
                 break;
             case "-":
-                MemoryCurrentNumber = MemoryCurrentNumber -  Number(localOperationMemory);
+                memoryCurrentNumber = memoryCurrentNumber -  Number(localOperationMemory);
                 break;
             case "*":
-                MemoryCurrentNumber = MemoryCurrentNumber * Number(localOperationMemory);
+                memoryCurrentNumber = memoryCurrentNumber * Number(localOperationMemory);
                 break;
             case "/":
-                MemoryCurrentNumber = MemoryCurrentNumber / Number(localOperationMemory);
+                memoryCurrentNumber = memoryCurrentNumber / Number(localOperationMemory);
                 break;
             case "x²":
-                MemoryCurrentNumber = display.value;            
-                MemoryCurrentNumber = Number(MemoryCurrentNumber) * Number(MemoryCurrentNumber);                     
-                MemoryPendingOperation = op;
+                memoryCurrentNumber = display.value;            
+                memoryCurrentNumber = Number(memoryCurrentNumber) * Number(memoryCurrentNumber);         
                 break;
             case "x³":
-                MemoryCurrentNumber = display.value;            
-                MemoryCurrentNumber = Number(MemoryCurrentNumber) * Number(MemoryCurrentNumber)* Number(MemoryCurrentNumber);
-                MemoryPendingOperation = op;
+                memoryCurrentNumber = display.value;            
+                memoryCurrentNumber = Number(memoryCurrentNumber) * Number(memoryCurrentNumber)* Number(memoryCurrentNumber);                
                 break;
             case "√":
-                MemoryCurrentNumber = display.value;              
-                MemoryCurrentNumber = Math.sqrt(localOperationMemory);
-                MemoryPendingOperation = op;
+                memoryCurrentNumber = display.value;              
+                memoryCurrentNumber = Math.sqrt(localOperationMemory);                
                 break;
             case "1/x":
-                MemoryCurrentNumber = display.value;               
-                MemoryCurrentNumber = 1/localOperationMemory;
-                MemoryPendingOperation = op;
+                memoryCurrentNumber = display.value;               
+                memoryCurrentNumber = 1/localOperationMemory;                
                 break;
             default:
-                MemoryCurrentNumber = +localOperationMemory; 
+                memoryCurrentNumber = +localOperationMemory; 
                 break;
           };
-    display.value = MemoryCurrentNumber;
-    MemoryPendingOperation = op;
+    display.value = memoryCurrentNumber;
+    memoryPendingOperation = op;
 };
 };
 
-function decimal(){
+function decimal() {
   let localDecimalMemory = display.value;
-if(MemoryNewNumber){
-  localDecimalMemory = '0.';
-  MemoryNewNumber= false;
-}else{
-    if(localDecimalMemory.indexOf('.') === -1){
-      localDecimalMemory +='.'
-    }    
+  if (memoryNewNumber) {
+    localDecimalMemory = '0.';
+    memoryNewNumber= false;
+  } else {
+    if (localDecimalMemory.indexOf('.') === -1) {
+      localDecimalMemory +='.';
+    }
   }
-  display.value = localDecimalMemory;  
+  display.value = localDecimalMemory;
 };
 
-function clear(id){
-  if(id === 'ce'){
-    display.value = '0';
-    MemoryNewNumber = true;
-  }else if(id === 'c'){
-    display.value = '0';
-    MemoryNewNumber = true;
-    MemoryCurrentNumber = 0;
-    MemoryPendigOperation = '';    
-  }    
+ function clear(id) {
+  if (id === 'ce') {
+    display.value = '0';    
+  } else if (id === 'c') {
+    display.value = '0';   
+    memoryCurrentNumber = 0;
+    memoryPendigOperation = '';    
+  }
+  memoryNewNumber = true;    
 };
- 

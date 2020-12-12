@@ -16,7 +16,7 @@ header {
   background: url("img/logo.png");
   width: 133px;
   height: 100px;
-  transition: 0.5s;
+  transition: .5s;
 }
 
 .main-logo:hover {
@@ -44,7 +44,7 @@ header {
   height: 60px;
   margin: 20px 0;
   border-radius: 10px;
-  background-color: #000000;
+  background-color: #000;
   color: #fff;
   text-align: right;
   font-size: 35px;
