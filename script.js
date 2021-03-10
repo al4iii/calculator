@@ -5,9 +5,9 @@ const clearBtns = document.querySelectorAll(".clear-btn");
 const resultBtn = document.getElementById("result");
 const piBtn = document.getElementById("pi");
 const display = document.getElementById("display");
-let memoryCurrentNumber = 0; // what number is currently entered on the scoreboard, by default 0
-let memoryNewNumber = false; // have we introduced a new meaning?
-let memoryPendingOperation = ""; // pending operation
+let memoryCurrentNumber = 0;
+let memoryNewNumber = false;
+let memoryPendingOperation = "";
 
 for (let i = 0; i < numbers.length; i++) {
   let number = numbers[i];
@@ -15,19 +15,15 @@ for (let i = 0; i < numbers.length; i++) {
     numberPress(e.target.textContent);
   });
 }
-
 for (let i = 0; i < operations.length; i++) {
   let operationBtn = operations[i];
   operationBtn.addEventListener("click", (e) => {
     operation(e.target.textContent);
   });
 }
-
 for (let i = 0; i < clearBtns.length; i++) {
   let clearBtn = clearBtns[i];
-  clearBtn.addEventListener("click", (e) => {
-    clear(e.target.id);
-  });
+  clearBtn.addEventListener("click", (e) => clear(e.target.id));
 }
 
 let numberPress = (number) => {
@@ -38,8 +34,7 @@ let numberPress = (number) => {
     display.value = display.value === "0" ? number : display.value + number;
   }
 };
-
-let  operation = (op) =>{
+let operation = (op) => {
   let localOperationMemory = display.value;
   if (memoryNewNumber && memoryPendingOperation !== "=") {
     display.value = memoryCurrentNumber;
@@ -67,7 +62,6 @@ let  operation = (op) =>{
         memoryCurrentNumber *= +memoryCurrentNumber * +memoryCurrentNumber;
         break;
       case "√":
-        memoryCurrentNumber = display.value;
         memoryCurrentNumber = Math.sqrt(localOperationMemory);
         break;
       case "1/x":
@@ -81,8 +75,7 @@ let  operation = (op) =>{
     display.value = memoryCurrentNumber;
     memoryPendingOperation = op;
   }
-}
-
+};
 let decimal = () => {
   let localDecimalMemory = display.value;
   if (memoryNewNumber) {
@@ -95,7 +88,6 @@ let decimal = () => {
   }
   display.value = localDecimalMemory;
 };
-
 let clear = (id) => {
   if (id === "ce") {
     display.value = "0";
